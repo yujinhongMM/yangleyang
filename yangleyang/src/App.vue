@@ -17,7 +17,6 @@ let countSelected = 0;
 const gameState = ref('notStart');
 
 const start = ({ dynamic = false}) => {
-  console.log("🚀 ~ file: App.vue ~ line 20 ~ start ~ dynamic", dynamic)
   musicRef.value.play();
   gameState.value = 'pending';
   list.value = [];
@@ -26,6 +25,9 @@ const start = ({ dynamic = false}) => {
     const newData = generateMap();
     map.value = changeMapClick(newData.map);
     count.value = newData.count;
+  } else {
+    map.value = changeMapClick(data.map);
+    count.value = data.count;
   }
 }
 
