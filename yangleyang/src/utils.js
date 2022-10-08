@@ -15,32 +15,51 @@ export const changeMapClick = (originMap) => {
             if (map[i].zIndex > map[j].zIndex) {
                 // 判断j在不在i的范围内
                 const jTop = map[j].top, jLeft = map[j].left;
+
+                const isShow = () => {
+                    return (
+                        (jTop + 12.5 <= top) ||
+                        (jTop >= top + 12.5) ||
+                        (jLeft + 12.5 <= left) ||
+                        (left + 12.5 <= jLeft)
+                    )
+                }
                 // 判断左上角
-                if (jTop > top && jTop < top + 12.5 && jLeft > left && jLeft < left + 12.5) {
-                    map[j].click = false;
-                    continue;
+                if (jTop >= top && jTop <= top + 12.5 && jLeft >= left && jLeft <= left + 12.5) {
+                    if (!isShow()) {
+                        map[j].click = false;
+                        continue;
+                    }
                 }
                 // 判断右上角
-                if (jTop > top && jTop < top + 12.5 && jLeft + 12.5 > left && jLeft + 12.5 < left + 12.5) {
-                    map[j].click = false;
-                    continue;
+                if (jTop >= top && jTop <= top + 12.5 && jLeft + 12.5 >= left && jLeft + 12.5 <= left + 12.5) {
+                    if (!isShow()) { 
+                        map[j].click = false;
+                        continue;
+                    }
                 }
                 // 判断左下角
-                if (jTop + 12.5 > top && jTop + 12.5 < top + 12.5 && jLeft > left && jLeft < left + 12.5) {
-                    map[j].click = false;
-                    continue;
+                if (jTop + 12.5 >= top && jTop + 12.5 <= top + 12.5 && jLeft >= left && jLeft <= left + 12.5) {
+                    if (
+                        !isShow()
+                    ) { 
+                        map[j].click = false;
+                        continue;
+                    }
                 }
                 // 判断右下角
-                if (jTop + 12.5 > top && jTop + 12.5 < top + 12.5 && jLeft + 12.5 > left && jLeft + 12.5 < left + 12.5) {
-                    map[j].click = false;
-                    continue;
+                if (jTop + 12.5 >= top && jTop + 12.5 <= top + 12.5 && jLeft + 12.5 >= left && jLeft + 12.5 <= left + 12.5) {
+                    if (!isShow()) { 
+                        map[j].click = false;
+                        continue;
+                    }
                 }
 
-                // 边界情况
-                if ((jTop === top && jLeft === left) || (jTop === top && jLeft < left + 12.5 && jLeft > left) || (jLeft === left && jTop < top + 12.5 && jTop > top)) {
-                    map[j].click = false;
-                    continue;
-                }
+                // // 边界情况
+                // if ((jTop === top && jLeft === left) || (jTop === top && jLeft < left + 12.5 && jLeft > left) || (jLeft === left && jTop < top + 12.5 && jTop > top)) {
+                //     map[j].click = false;
+                //     continue;
+                // }
             }
         }
     }
