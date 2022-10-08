@@ -3,29 +3,35 @@ import { ref, onMounted } from 'vue';
 import music from './assets/1.mp3';
 import images from './image';
 import data from './map.js';
-import { changeMapClick } from './utils';
+import { changeMapClick, generateMap } from './utils';
 
+const count = ref(data.count);
 // 地图
 const map = ref(changeMapClick(data.map));
 // 选择的卡牌列表
 const list = ref([]);
 const musicRef = ref(null);
 // 已经被选了的牌
-let count = 0;
+let countSelected = 0;
 // 游戏状态
 const gameState = ref('notStart');
 
-const start = () => {
+const start = ({ dynamic = false}) => {
+  console.log("🚀 ~ file: App.vue ~ line 20 ~ start ~ dynamic", dynamic)
   musicRef.value.play();
   gameState.value = 'pending';
   list.value = [];
-  map.value = changeMapClick(data.map);
-  count = 0;
+  countSelected = 0;
+  if (dynamic) {
+    const newData = generateMap();
+    map.value = changeMapClick(newData.map);
+    count.value = newData.count;
+  }
 }
 
 const clickCard = (lattice) => {
   if (lattice.click && gameState.value ==='pending') {
-    count++;
+    countSelected++;
     map.value = changeMapClick(map.value.filter(item => item.id !== lattice.id));
     // 需要放进被选择框的列表
     const index = list.value.findIndex(item => item.type === lattice.type)
@@ -47,8 +53,12 @@ const clickCard = (lattice) => {
       if (list.value.length === 7) {
         gameState.value = 'fail';
       }
-      if (count === data.count) {
-        gameState.value = 'success';
+      if (countSelected === count.value) {
+        if (countSelected === data.count) {
+          start({dynamic: true})
+        } else {
+          gameState.value = 'success';
+        }
       }
     }, 300)
   }
