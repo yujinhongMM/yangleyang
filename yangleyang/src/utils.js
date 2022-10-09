@@ -1,3 +1,5 @@
+import { WIDTH } from './config';
+
 // 计算当前map可拾取的状态
 export const changeMapClick = (originMap) => {
     const map = [...originMap];
@@ -16,19 +18,19 @@ export const changeMapClick = (originMap) => {
                 // 判断j在不在i的范围内
                 const jTop = map[j].top, jLeft = map[j].left;
                 // 判断左上角
-                const LT = jTop > top && jTop < top + 12.5 && jLeft > left && jLeft < left + 12.5;
+                const LT = jTop > top && jTop < top + WIDTH && jLeft > left && jLeft < left + WIDTH;
                 // 判断右上角
-                const RT = jTop > top && jTop < top + 12.5 && jLeft + 12.5 > left && jLeft + 12.5 < left + 12.5;
+                const RT = jTop > top && jTop < top + WIDTH && jLeft + WIDTH > left && jLeft + WIDTH < left + WIDTH;
                 // 判断左下角
-                const LB = jTop + 12.5 > top && jTop + 12.5 < top + 12.5 && jLeft > left && jLeft < left + 12.5;
+                const LB = jTop + WIDTH > top && jTop + WIDTH < top + WIDTH && jLeft > left && jLeft < left + WIDTH;
                 // 判断右下角
-                const RB = jTop + 12.5 > top && jTop + 12.5 < top + 12.5 && jLeft + 12.5 > left && jLeft + 12.5 < left + 12.5;
+                const RB = jTop + WIDTH > top && jTop + WIDTH < top + WIDTH && jLeft + WIDTH > left && jLeft + WIDTH < left + WIDTH;
                 // 边界重合情况
                 const boundary = 
-                    (top === jTop && jLeft >= left && jLeft < left + 12.5) ||
-                    (top === jTop && jLeft <= left && jLeft + 12.5 > left) ||
-                    (left === jLeft && jTop >= top && jTop < top + 12.5) ||
-                    (left === jLeft && jTop <= top && jTop + 12.5 > top)
+                    (top === jTop && jLeft >= left && jLeft < left + WIDTH) ||
+                    (top === jTop && jLeft <= left && jLeft + WIDTH > left) ||
+                    (left === jLeft && jTop >= top && jTop < top + WIDTH) ||
+                    (left === jLeft && jTop <= top && jTop + WIDTH > top)
                 if (LT || RT || LB || RB || boundary) {
                     map[j].click = false;
                     continue;
@@ -52,8 +54,8 @@ export const generateMap = () => {
             const obj = {
                 id,
                 type,
-                top: 12.5 * i,
-                left: 12.5 * j,
+                top: WIDTH * i,
+                left: WIDTH * j,
                 click: false,
                 zIndex: 1,
             }
@@ -68,8 +70,8 @@ export const generateMap = () => {
             const obj = {
                 id,
                 type,
-                top: 12.5 * i + 6.25,
-                left: 12.5 * j + 6.25,
+                top: WIDTH * i + WIDTH / 2,
+                left: WIDTH * j + WIDTH / 2,
                 click: false,
                 zIndex: 2,
             }
@@ -84,8 +86,8 @@ export const generateMap = () => {
             const obj = {
                 id,
                 type,
-                top: 12.5 * i + 12.5,
-                left: 12.5 * j + 12.5,
+                top: WIDTH * i + WIDTH,
+                left: WIDTH * j + WIDTH,
                 click: false,
                 zIndex: 3,
             }
@@ -98,13 +100,13 @@ export const generateMap = () => {
         if (remainder !== 3) {
             for (let j = 0; j < remainder; j++) {
                 id++;
-                const random_1 = Math.floor(Math.random() * 70);
-                const random_2 = Math.floor(Math.random() * 70);
+                const random_1 = Math.floor(Math.random() * 75);
+                const random_2 = Math.floor(Math.random() * 75);
                 const obj = {
                     id,
                     type: key,
-                    top: random_1 % 12.5 < 3 ? random_1 + 3 : random_1,
-                    left: random_2 % 12.5 < 3 ? random_2 + 3 : random_2,
+                    top: random_1 % WIDTH < 3 ? random_1 + 3 : random_1,
+                    left: random_2 % WIDTH < 3 ? random_2 + 3 : random_2,
                     click: false,
                     zIndex: id,
                 }
