@@ -1,9 +1,10 @@
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref } from 'vue';
 import music from './assets/1.mp3';
 import images from './image';
 import dataMap from './map.js';
 import { changeMapClick, generateMap } from './utils';
+import { GAME_STATE } from './config';
 
 const count = ref(dataMap.length);
 // 地图
@@ -14,13 +15,14 @@ const musicRef = ref(null);
 // 已经被选了的牌
 let countSelected = 0;
 // 游戏状态
-const gameState = ref('notStart');
+const gameState = ref(GAME_STATE.NOT_START);
 
 const start = ({ dynamic = false}) => {
   musicRef.value.play();
-  gameState.value = 'pending';
+  gameState.value = GAME_STATE.PENDING;
   list.value = [];
   countSelected = 0;
+  // 是否是动态的生成地图
   if (dynamic) {
     const newDataMap = generateMap();
     map.value = changeMapClick(newDataMap);
@@ -32,7 +34,7 @@ const start = ({ dynamic = false}) => {
 }
 
 const clickCard = (lattice) => {
-  if (lattice.click && gameState.value ==='pending') {
+  if (lattice.click && gameState.value === GAME_STATE.PENDING) {
     countSelected++;
     map.value = changeMapClick(map.value.filter(item => item.id !== lattice.id));
     // 需要放进被选择框的列表
@@ -53,13 +55,13 @@ const clickCard = (lattice) => {
       }
       // 判断length是否为7
       if (list.value.length === 7) {
-        gameState.value = 'fail';
+        gameState.value = GAME_STATE.FAIL;
       }
       if (countSelected === count.value) {
         if (countSelected === dataMap.length) {
           start({dynamic: true})
         } else {
-          gameState.value = 'success';
+          gameState.value = GAME_STATE.SUCCESS;
         }
       }
     }, 300)
@@ -90,10 +92,10 @@ const clickCard = (lattice) => {
         <img :src="images[lattice.type]" class="lattice-img" />
       </div>
     </div>
-    <div class="game" v-if="gameState !== 'pending'">
-      <div class="text" v-if="gameState === 'success'">恭喜过关</div>
-      <div class="text" v-if="gameState === 'fail'">挑战失败</div>
-      <div class="button" @click="start">{{gameState === 'notStart' ? '开始游戏' : '再玩一次'}}</div>
+    <div class="game" v-if="gameState !== GAME_STATE.PENDING">
+      <div class="text" v-if="gameState === GAME_STATE.SUCCESS">恭喜过关</div>
+      <div class="text" v-if="gameState === GAME_STATE.FAIL">挑战失败</div>
+      <div class="button" @click="start">{{gameState === GAME_STATE.NOT_START ? '开始游戏' : '再玩一次'}}</div>
     </div>
   </div>
 </template>
