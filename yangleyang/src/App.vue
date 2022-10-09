@@ -120,7 +120,7 @@ const clickCard = (lattice) => {
 		height: 10.2vw;
 		padding: 1vw;
 		border: 0.15vw solid black;
-		border-radius: 20%;
+		border-radius: 10%;
 		background-color: white;
 	}
   .drawer-lattice {
