@@ -15,15 +15,6 @@ export const changeMapClick = (originMap) => {
             if (map[i].zIndex > map[j].zIndex) {
                 // 判断j在不在i的范围内
                 const jTop = map[j].top, jLeft = map[j].left;
-
-                const isShow = () => {
-                    return (
-                        (jTop + 12.5 <= top) ||
-                        (jTop >= top + 12.5) ||
-                        (jLeft + 12.5 <= left) ||
-                        (left + 12.5 <= jLeft)
-                    )
-                }
                 // 判断左上角
                 const LT = jTop > top && jTop < top + 12.5 && jLeft > left && jLeft < left + 12.5;
                 // 判断右上角
@@ -122,8 +113,5 @@ export const generateMap = () => {
         }
     }
     
-    return {
-        map: mapList,
-        count: id
-    }
+    return mapList;
 }

@@ -2,12 +2,12 @@
 import { ref, onMounted } from 'vue';
 import music from './assets/1.mp3';
 import images from './image';
-import data from './map.js';
+import dataMap from './map.js';
 import { changeMapClick, generateMap } from './utils';
 
-const count = ref(data.count);
+const count = ref(dataMap.length);
 // 地图
-const map = ref(changeMapClick(data.map));
+const map = ref(changeMapClick(dataMap));
 // 选择的卡牌列表
 const list = ref([]);
 const musicRef = ref(null);
@@ -22,13 +22,12 @@ const start = ({ dynamic = false}) => {
   list.value = [];
   countSelected = 0;
   if (dynamic) {
-    const newData = generateMap();
-    console.log("🚀 ~ file: App.vue ~ line 26 ~ start ~ newData", newData)
-    map.value = changeMapClick(newData.map);
-    count.value = newData.count;
+    const newDataMap = generateMap();
+    map.value = changeMapClick(newDataMap);
+    count.value = newDataMap.length;
   } else {
-    map.value = changeMapClick(data.map);
-    count.value = data.count;
+    map.value = changeMapClick(dataMap);
+    count.value = dataMap.length;
   }
 }
 
@@ -57,7 +56,7 @@ const clickCard = (lattice) => {
         gameState.value = 'fail';
       }
       if (countSelected === count.value) {
-        if (countSelected === data.count) {
+        if (countSelected === dataMap.length) {
           start({dynamic: true})
         } else {
           gameState.value = 'success';
