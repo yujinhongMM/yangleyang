@@ -105,8 +105,8 @@ export const generateMap = () => {
                 const obj = {
                     id,
                     type: key,
-                    top: random_1 % WIDTH < 3 ? random_1 + 3 : random_1,
-                    left: random_2 % WIDTH < 3 ? random_2 + 3 : random_2,
+                    top: random_1 % WIDTH < 3 ? random_1 + 4 : random_1,
+                    left: random_2 % WIDTH < 3 ? random_2 + 4 : random_2,
                     click: false,
                     zIndex: id,
                 }

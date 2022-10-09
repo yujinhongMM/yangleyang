@@ -76,16 +76,14 @@ const clickCard = (lattice) => {
   <div class="bg">
     <audio :src="music" loop="loop" ref="musicRef"></audio>
     <div class="container">
-      <template v-for="lattice in map">
-        <div 
-          :key="lattice.id"
-          v-if="lattice.type !== -1" 
-          :class="lattice.click ? 'lattice' : 'lattice gray' " 
-          :style="`top: ${lattice.top}vw; left: ${lattice.left}vw; z-index: ${lattice.zIndex}`" 
-          @click="() => clickCard(lattice)">
-          <img :src="images[lattice.type]" class="lattice-img" />
-        </div>
-      </template>
+      <div 
+        v-for="lattice in map"
+        :key="lattice.id"
+        :class="lattice.click ? 'lattice' : 'lattice gray' " 
+        :style="`top: ${lattice.top}vw; left: ${lattice.left}vw; z-index: ${lattice.zIndex}`" 
+        @click="() => clickCard(lattice)">
+        <img :src="images[lattice.type]" class="lattice-img" />
+      </div>
     </div>
     <div class="drawer">
       <div v-for="lattice in list" :key="lattice.id" class="lattice drawer-lattice">
