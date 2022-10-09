@@ -23,6 +23,7 @@ const start = ({ dynamic = false}) => {
   countSelected = 0;
   if (dynamic) {
     const newData = generateMap();
+    console.log("🚀 ~ file: App.vue ~ line 26 ~ start ~ newData", newData)
     map.value = changeMapClick(newData.map);
     count.value = newData.count;
   } else {

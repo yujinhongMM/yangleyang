@@ -25,41 +25,23 @@ export const changeMapClick = (originMap) => {
                     )
                 }
                 // 判断左上角
-                if (jTop >= top && jTop <= top + 12.5 && jLeft >= left && jLeft <= left + 12.5) {
-                    if (!isShow()) {
-                        map[j].click = false;
-                        continue;
-                    }
-                }
+                const LT = jTop > top && jTop < top + 12.5 && jLeft > left && jLeft < left + 12.5;
                 // 判断右上角
-                if (jTop >= top && jTop <= top + 12.5 && jLeft + 12.5 >= left && jLeft + 12.5 <= left + 12.5) {
-                    if (!isShow()) { 
-                        map[j].click = false;
-                        continue;
-                    }
-                }
+                const RT = jTop > top && jTop < top + 12.5 && jLeft + 12.5 > left && jLeft + 12.5 < left + 12.5;
                 // 判断左下角
-                if (jTop + 12.5 >= top && jTop + 12.5 <= top + 12.5 && jLeft >= left && jLeft <= left + 12.5) {
-                    if (
-                        !isShow()
-                    ) { 
-                        map[j].click = false;
-                        continue;
-                    }
-                }
+                const LB = jTop + 12.5 > top && jTop + 12.5 < top + 12.5 && jLeft > left && jLeft < left + 12.5;
                 // 判断右下角
-                if (jTop + 12.5 >= top && jTop + 12.5 <= top + 12.5 && jLeft + 12.5 >= left && jLeft + 12.5 <= left + 12.5) {
-                    if (!isShow()) { 
-                        map[j].click = false;
-                        continue;
-                    }
+                const RB = jTop + 12.5 > top && jTop + 12.5 < top + 12.5 && jLeft + 12.5 > left && jLeft + 12.5 < left + 12.5;
+                // 边界重合情况
+                const boundary = 
+                    (top === jTop && jLeft >= left && jLeft < left + 12.5) ||
+                    (top === jTop && jLeft <= left && jLeft + 12.5 > left) ||
+                    (left === jLeft && jTop >= top && jTop < top + 12.5) ||
+                    (left === jLeft && jTop <= top && jTop + 12.5 > top)
+                if (LT || RT || LB || RB || boundary) {
+                    map[j].click = false;
+                    continue;
                 }
-
-                // // 边界情况
-                // if ((jTop === top && jLeft === left) || (jTop === top && jLeft < left + 12.5 && jLeft > left) || (jLeft === left && jTop < top + 12.5 && jTop > top)) {
-                //     map[j].click = false;
-                //     continue;
-                // }
             }
         }
     }
@@ -121,15 +103,17 @@ export const generateMap = () => {
     }
     // 遍历map
     for (let [key, value] of map) {
-        const remainder = value % 3;
-        if (remainder !== 0) {
-            id++;
-            for (let j = remainder; j > 0; j--) {
+        const remainder = 3 - value % 3;
+        if (remainder !== 3) {
+            for (let j = 0; j < remainder; j++) {
+                id++;
+                const random_1 = Math.floor(Math.random() * 70);
+                const random_2 = Math.floor(Math.random() * 70);
                 const obj = {
                     id,
                     type: key,
-                    top: Math.floor(Math.random() * 70),
-                    left:Math.floor(Math.random() * 70),
+                    top: random_1 % 12.5 < 3 ? random_1 + 3 : random_1,
+                    left: random_2 % 12.5 < 3 ? random_2 + 3 : random_2,
                     click: false,
                     zIndex: id,
                 }
